@@ -1,0 +1,79 @@
+import Tirador.*
+import Pasador.*
+import Rebotador.*
+import Entrenador.*
+import Equipo.*
+
+describe "Jugadores Test" {
+
+	const juan
+	const franco
+
+	fixture {
+		juan = new Tirador(altura = 180, eficaciaTriple = 60, nivelInteligencia = 30, talento = 60)
+		franco = new Rebotador(altura = 200, nivelInteligencia = 70, talento = 70, eficaciaTriple = 10)
+	}
+
+	test "Juan tiene 108.375 de habilidad" {
+		assert.equals(108.375, juan.habilidad())
+	}
+
+	test "Franco tiene 84.8 de habilidad" {
+		assert.equals(84.8, franco.habilidad())
+	}
+
+	test "Aye tiene 45.32 de habilidad" {
+		const aye = new Pasador(altura = 167, eficaciaTriple = 35, nivelInteligencia = 80, talento = 85)
+		assert.equals(45.32, aye.habilidad())
+	}
+
+	test "Juan es crack" {
+		assert.that(juan.esCrack())
+	}
+
+	test "Franco no es crack" {
+		assert.notThat(franco.esCrack())
+	}
+
+	test "juan no es Leyenda" {
+		assert.notThat(juan.esLeyenda())
+	}
+
+}
+
+describe "Entrenadores Test" {
+
+	test "Fede entrena a Juan y aumenta su talento en 10%" {
+		const juan = new Tirador(altura = 180, eficaciaTriple = 60, nivelInteligencia = 30, talento = 60)
+		const fede = new Entrenador()
+		const talentoAnterior = juan.talento()
+		fede.entrenarA(juan)
+		assert.equals(talentoAnterior * 1.10, juan.talento())
+	}
+
+}
+
+describe "Equipos Test" {
+	
+	const juan
+	const franco
+	const aye
+	const equipoPdep
+	
+	fixture {
+		juan = new Tirador(altura = 180, eficaciaTriple = 60, nivelInteligencia = 30, talento = 60)
+		franco = new Rebotador(altura = 200, nivelInteligencia = 70, talento = 70, eficaciaTriple = 10)
+		aye = new Pasador(altura = 167, eficaciaTriple = 35, nivelInteligencia = 80, talento = 85)
+		equipoPdep = new Equipo( jugadores = #{ juan, franco, aye })
+	}
+
+	test "Equipo PdeP tiene 238,495 de habilidad" {
+		assert.equals(238.495, equipoPdep.valoracionEquipo())
+	}
+	
+	test "Equipo PdeP no es dream Team" {
+		assert.notThat(equipoPdep.esDreamTeam())
+	}
+
+}
+
