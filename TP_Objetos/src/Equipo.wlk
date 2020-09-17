@@ -3,7 +3,7 @@ class Equipo {
 	const jugadores = #{}
 	
 	method valoracionEquipo() {
-		return jugadores.sum({jugador => jugador.habilidad()})
+		return jugadores.sum({jugador => jugador.habilidad()}) / 3
 	}
 	
 	method esDreamTeam() {

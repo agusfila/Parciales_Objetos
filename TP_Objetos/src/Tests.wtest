@@ -67,8 +67,8 @@ describe "Equipos Test" {
 		equipoPdep = new Equipo( jugadores = #{ juan, franco, aye })
 	}
 
-	test "Equipo PdeP tiene 238,495 de habilidad" {
-		assert.equals(238.495, equipoPdep.valoracionEquipo())
+	test "Equipo PdeP tiene 79.49833 de habilidad" {
+		assert.equals(79.49833, equipoPdep.valoracionEquipo())
 	}
 	
 	test "Equipo PdeP no es dream Team" {
