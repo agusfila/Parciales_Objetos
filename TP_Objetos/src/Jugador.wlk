@@ -40,6 +40,11 @@ class Jugador {
 		const estilos = [ estiloTirador, estiloPasador, estiloRebotador ]
 		return estilos.all({ estilo => estilo.esCrack() })
 	}
+	
+	method habilidad()
+	
+	method esCrack() {
+		return self.habilidad() > 90
+	}
 
 }
-
