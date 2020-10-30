@@ -1,0 +1,28 @@
+import Vikingos.*
+import Expediciones.*
+
+describe "Expediciones Tests" {
+
+	const tito
+	const adrogue
+	const expedicionAAdrogue
+	const agustin
+
+	fixture {
+		tito = new Soldado(castaSocial = karl, hijos = 2, armas = 3, hectareas = 2, vidasCobradas = 15, monedas = 0)
+		agustin = new Soldado(castaSocial = karl, hijos = 2, armas = 3, hectareas = 2, vidasCobradas = 25, monedas = 0)
+		adrogue = new Capital(defensores = 2, riqueza = 1)
+		expedicionAAdrogue = new Expedicion(lugaresAInvadir = #{ adrogue })
+	}
+
+	test "Un vikingo intenta subir a una expedicion y no puede" {
+		assert.throwsExceptionWithMessage("Este vikingo no puede subir a la expedicion.", { expedicionAAdrogue.subirAExpedicion(tito)})
+	}
+
+	test "La expedicion a Adrogue no vale la pena" {
+		expedicionAAdrogue.subirAExpedicion(agustin)
+		assert.notThat(expedicionAAdrogue.valeLaPena())
+	}
+
+}
+

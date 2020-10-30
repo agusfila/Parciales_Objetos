@@ -1,0 +1,42 @@
+import Persona.*
+import Suenio.*
+
+describe "Tests" {
+
+	const tito
+	const recibirseIngeniero
+	const tenerUnHijo
+	const adoptar3Hijos
+	const trabajoProgamador
+	const progamador
+
+	fixture {
+		progamador = new Trabajo(plataGanada = 1500)
+		recibirseIngeniero = new Recibirse(carrera = "Ingeniero En Sistemas De Informacion", felicidad = 1000)
+		tenerUnHijo = new TenerUnHijo(felicidad = 100)
+		trabajoProgamador = new ConseguirTrabajo(trabajo = progamador, felicidad = 500)
+		adoptar3Hijos = new Adoptar(cantidad = 3, felicidad = 300)
+		tito = new Persona(edad = 20, carreras = #{ "Ingeniero En Sistemas De Informacion" }, plataDeseada = 1000, hijos = 0, tipo = realista, sueniosPendientes = #{ recibirseIngeniero, tenerUnHijo, adoptar3Hijos, trabajoProgamador })
+	}
+
+	test "Tito se recibe de ingeniero y se agrega a sus suenios cumplidos" {
+		tito.cumplirSuenioElegido()
+		assert.that(tito.sueniosCumplidos().contains(recibirseIngeniero))
+	}
+
+	test "Tito tiene hijos y despues no puede adoptar" {
+		tito.cumplir(tenerUnHijo)
+		assert.throwsExceptionWithMessage("No se puede cumplir Suenio", ({ tito.cumplir(adoptar3Hijos) }))
+	}
+
+	test "Tito se recibe de ingeniero y es feliz" {
+		tito.cumplir(recibirseIngeniero)
+		assert.that(tito.esFeliz())
+	}
+
+	test "Tito es ambicioso" {
+		assert.equals(4,tito.ambiciosos(sueniosPendientes))
+	}
+
+}
+

@@ -1,0 +1,44 @@
+import Miembro.*
+import Rangos.*
+import Familia.*
+
+describe "El Padrino Tests" {
+	const donVito
+	const tito
+	const agustin
+	const familiaCorleone
+	const familiaTattaglia
+	const donPito
+	const rosco
+	
+	fixture {
+		donPito = new Miembro(lealtad = 300, familia = familiaTattaglia)
+		tito = new Miembro(lealtad = 200, familia = familiaCorleone)
+		agustin = new Miembro(lealtad = 150, familia = familiaCorleone)
+		donVito = new Miembro(lealtad = 100, familia = familiaCorleone)
+		rosco = new Miembro(lealtad = 50, familia = familiaTattaglia)
+		familiaTattaglia = new Familia(apellido = "Tattaglia", donDeLaFamilia = donPito, maximaLealtad = 300, miembros = #{rosco, donPito})
+		familiaCorleone = new Familia(apellido = "Corleone", donDeLaFamilia = donVito, maximaLealtad = 200, miembros = #{agustin,tito, donVito})
+		
+		tito.asignarRango(subJefe)
+		agustin.asignarRango(soldado)
+		donVito.asignarRango(don)
+		rosco.asignarRango(soldado)
+		donPito.asignarRango(don)
+	}
+	
+	test "Agustin ataca a Rosco y lo hiere" {
+		agustin.hacerSuTrabajo(rosco)
+		assert.that(rosco.estaHerido())
+	} 
+	
+	test "Agustin ataca a Rosco dos veces y lo mata" {
+		agustin.hacerSuTrabajo(rosco)
+		agustin.hacerSuTrabajo(rosco)
+		assert.that(rosco.estaHerido())
+	} 
+	
+	test "Don Vito tiene a Tito y a Agustin como subordinados" {
+		assert.equals(#{tito,agustin},donVito.subordinados())
+	}
+}
