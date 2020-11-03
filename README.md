@@ -1,1 +1,1 @@
-# TP_Objetos_Tito
+# Parciales resueltos de Paradigmas de Progamacion
