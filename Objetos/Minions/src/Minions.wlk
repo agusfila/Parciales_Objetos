@@ -93,3 +93,13 @@ class Ciclope inherits Minion {
 
 }
 
+class Fruta {
+	
+	const property nutrientes
+	
+}
+
+const banana = new Fruta(nutrientes = 10)
+const manzana = new Fruta(nutrientes = 5)
+const uva = new Fruta(nutrientes = 1)
+

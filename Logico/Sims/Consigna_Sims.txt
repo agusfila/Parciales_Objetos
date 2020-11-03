@@ -1,0 +1,86 @@
+Un servidor del juego Sims quiere delegar parte de su lógica en un programa Prolog. 
+Para eso, genera una base de hechos que representan parte de la información que maneja, en esta forma (se incluyen algunos ejemplos de cada predicado):
+% los intereses de cada sim
+intereses(cholo,[deportes,musica,computacion,sociedad]).
+intereses(lara,[moda, musica,economia,animales]).
+
+% la personalidad de los Sims en los distintos aspectos
+% viene dada por su signo
+personalidadPorSigno(aries,pulcritud,5).
+personalidadPorSigno(aries,extroversion,7).
+personalidadPorSigno(aries,actividad,4).
+personalidadPorSigno(aries,animoLudico,5).
+personalidadPorSigno(aries,cordialidad,4).
+personalidadPorSigno(cancer,pulcritud,7).
+personalidadPorSigno(cancer,extroversion,6).
+personalidadPorSigno(cancer,actividad,6).
+personalidadPorSigno(cancer,animoLudico,4).
+personalidadPorSigno(cancer,cordialidad,3).
+
+signoSim(cholo,cancer).
+signoSim(lara,aries).
+
+% para cada Sim se maneja su nivel de distintos estados
+% nivelSim relaciona sim, estado y nivel
+nivelSim(cholo,energia,6).
+nivelSim(cholo,diversion,3).
+nivelSim(cholo,sociedad,7). 
+nivelSim(cholo,hambre,3).
+nivelSim(cholo,banio,3).
+nivelSim(lara,energia,4).
+nivelSim(lara,diversion,6).
+nivelSim(lara,sociedad,5). 
+nivelSim(lara,hambre,4).
+nivelSim(lara,banio,6).
+
+% hay estados que se autoatienden, que son
+%    la sociedad (el sim se pone a chatear solo) 
+%    y el banio (... el sim se hace encima).
+seAutoAtiende(sociedad).
+seAutoAtiende(banio).
+
+% el efecto que tienen los accesorios que pueden usar 
+% los sims sobre sus estados
+efecto(sillon,suma(energia,4)).
+efecto(cama,asigna(energia,6)).
+efecto(tele,duplica(diversion)).
+
+
+ 
+Se pide definir estos predicados
+1.	noCongenian/2 que relaciona dos sims si no congenian, o sea, si no hay ningún tema del cual le guste hablar a los dos.
+A un Sim le gusta hablar de: 
+•	cualquiera de sus intereses, 
+•	de cocina, si su nivel de hambre es menor a 8
+•	del futuro, si su nivel de energía es mayor a 12.
+
+2.	seLlevanBien/2 que relaciona dos sims si se llevan bien, o sea, si coincide la suma de sus niveles sin contar el baño.
+P.ej. en el ejemplo cholo y lara se llevan bien, porque la suma de sus niveles sin contar el baño es 19.
+
+3.	
+a.	necesitaAtencion/2 que relacione un estado con un nivel (o sea, un número), si un sim que tiene ese nivel para ese estado necesita atención.
+El hambre necesita atención para los valores pares.
+El resto de los estados que no se autoatienden necesitan atención para los valores menores a 9.
+Los estados que se autoatienden no necesitan atención para ningún valor.
+b.	deBuenHumor/1, un sim está de buen humor si ninguno de sus estados está complicado; un sim está complicado para un estado si su nivel en ese estado necesita atención.
+c.	compartenPesares/2, relaciona dos sims si para algún estado los dos están complicados.
+
+4.	puedenSerAmigos/2, relaciona dos sims si se cumple alguna de estas condiciones
+•	los dos son sociables; un sim es sociable si  su extroversion > 6.
+•	sus signos son compatibles; dos signos son compatibles si al menos coinciden los niveles de 3 aspectos de personalidad.
+•	se llevan bien (punto 2) y ambos están de buen humor (punto 3.b).
+
+5.	
+a.	afecta/2 que relaciona un accesorio con un estado, si el accesorio tiene algún efecto (sumar, asignar o duplicar) para ese estado.
+b.	aplicar/4, que relaciona estado, accesorio, y dos niveles A y D, si el efecto del accesorio sobre el estado, aplicado a A, resulta en D. Ejemplos de consultas
+?- aplicar(diversion,tele,7,X).     X = 14 (duplica)
+?- aplicar(energia,cama,2,X).     X = 6 (asigna el valor fijo)
+?- aplicar(energia,tele,7,X).       X = 7 (la tele no afecta a la energía)
+
+6.	leVieneBien/2 que relaciona un sim con un accesorio si: el accesorio afecta a algun estado en el que el sim está complicado, y el resultado de aplicar el accesorio al nivel del sim en ese estado no necesita atención.
+P.ej. en el ejemplo a cholo le viene bien el sillón, porque 
+•	cholo está complicado para la energía, 
+•	el sillón afecta a la energía, 
+•	si le aplico el sillón (que suma 4 a la energía) al nivel de energía de cholo (6), el resultado (10) no necesita atención para la energía.
+
+Ayuda general: en los puntos 1 a 4 definan predicados auxiliares.

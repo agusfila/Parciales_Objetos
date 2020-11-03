@@ -1,0 +1,48 @@
+Supermercados
+Se quiere desarrollar un sistema para analizar las compras de la gente cuando va al supermercado. Para ello disponemos de la siguiente base de conocimientos de ejemplo.
+
+%primeraMarca(Marca)
+primeraMarca(laSerenisima).
+primeraMarca(gallo).
+primeraMarca(vienisima).
+
+%precioUnitario(Producto,Precio)
+%donde Producto puede ser arroz(Marca), lacteo(Marca,TipoDeLacteo), salchicas(Marca,Cantidad)
+precioUnitario(arroz(gallo),25.10).
+precioUnitario(lacteo(laSerenisima,leche), 6.00).
+precioUnitario(lacteo(laSerenisima,crema), 4.00).
+precioUnitario(lacteo(gandara,queso(gouda)), 13.00).
+precioUnitario(lacteo(vacalin,queso(mozzarella)), 12.50).
+precioUnitario(salchichas(vienisima,12), 9.80).
+precioUnitario(salchichas(vienisima, 6), 5.80).
+precioUnitario(salchichas(granjaDelSol, 8), 5.10).
+
+%descuento(Producto, Descuento)
+descuento(lacteo(laSerenisima,leche), 0.20).
+descuento(lacteo(laSerenisima,crema), 0.70).
+descuento(lacteo(gandara,queso(gouda)), 0.70).
+descuento(lacteo(vacalin,queso(mozzarella)), 0.05).
+
+%compro(Cliente,Producto,Cantidad)
+compro(juan,lacteo(laSerenisima,crema),2).
+
+Resolver los siguientes requerimentos usando los conceptos del paradigma lógico de modo que sean completamente inversibles.
+Importante: no usar = en ningún lugar de la resolución ni is si no se está resolviendo una operación aritmética.
+
+1)  Desarrollar la lógica para agregar los siguientes descuentos
+    - El arroz tiene un descuento del  $1.50. 
+    - Las salchichas tienen $0,50 de descuento si no son vienisima.
+    - Los lacteos tienen $2 de descuento si son leches o quesos de primera marca. (el primera marca sólo se refiere a los quesos).
+    - El producto con el mayor precio unitario tiene 5% de descuento.
+
+2) Saber si un cliente es comprador compulsivo, lo cual sucede si compró todos los productos de primera marca que tuvieran descuento.
+
+3) Definir el predicado totalAPagar/2 que relaciona a un cliente con el total de su compra teniendo en cuenta que para cada producto comprado se debe considerar el precio con los descuentos que tenga.
+
+4) Definir clienteFiel/2 sabiendo que un cliente es fiel a la marca X cuando no compra nada de otra marca si también lo vende X.
+ 
+Se agrega el predicado dueño que relaciona dos marcas siendo que la primera es dueña de la otra.
+dueño(laSerenisima, gandara).
+dueño(gandara, vacalín).
+
+5) Definir provee/2 que relaciona una empresa con una lista de todas las cosas que provee ella o alguna de sus empresas a cargo. Una empresa se considera a cargo de otra si es su dueña o es dueña de una empresa que la tiene a cargo.

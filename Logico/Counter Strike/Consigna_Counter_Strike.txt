@@ -1,0 +1,80 @@
+Un servidor de Counter-Strike quiere delegar parte de su lógica en un programa Prolog. 
+Para eso, genera una base de hechos que representan parte de la información que maneja, en esta forma (se incluyen algunos ejemplos de cada predicado):
+% jugador(Jugador,Equipo): relaciona cada jugador 
+% con su equipo
+jugador(heaton,nip).	%nip = Ninjas in Pijamas
+jugador(potti,nip).
+jugador(element,gol).	%gol = Game OnLine
+
+% equipoTerrorista y equipoAntiTerrorista: 
+% en qué bando está cada equipo
+equipoTerrorista(nip).
+equipoAntiTerrorista(gol).
+
+/* Equipamiento de cada jugador, usando estos functores
+       casco(resistencia,ventilacion)
+       chaleco(resistencia)
+       rifle(modelo,velocidad en disparos por segundo)
+       pistola(modelo,velocidad)
+ */
+equipamiento(heaton,casco(20,9)).
+equipamiento(heaton,chaleco(80)).
+equipamiento(heaton,rifle(ak47,30)).
+equipamiento(heaton,pistola(usp,12)).
+
+% importanciaRifles: lista de rifles en orden de importancia 
+% (el primero es el mas importante)
+importanciaRifles([awp,ak47,m4a1,aug,galil,famas]).
+
+% presentoA(EquipoPresentador, EquipoPresentado)
+% para entrar al servidor te tiene que presentar otro equipo
+presentoA(nip,gol).
+presentoA(mTw,nip).
+presentoA(mTw,noA).
+presentoA(noA,fip).
+
+% mapas (zonas) limítrofes, 
+% como la base es generada, ya los arma en ambos sentidos
+limitrofe(dust2,inferno).
+limitrofe(inferno,dust2).
+limitrofe(dust2,train).
+limitrofe(train,dust2).
+limitrofe(inferno,cbble).
+limitrofe(cbble,inferno).
+
+% en qué mapa está cada jugador ahora
+estaEn(heaton,dust2).
+estaEn(potti,inferno).
+estaEn(element,inferno).
+
+ 
+Se pide 
+1.	agregar la siguiente información de la forma más compacta posible: todos los integrantes de equipos terroristas tienen una pistola desert eagle de velocidad 25.
+
+2.	
+a.	definir el predicado resistenciaItem/2 que relacione un item con el grado de resistencia que brinda; para los rifles y las pistolas es 0.
+b.	definir el predicado enemigos/2, que relaciona dos jugadores si son de bandos enemigos, o sea, uno es de un equipo terrorista y el otro de un equipo antiterrorista.
+
+3.	definir el predicado equipoComplicado/1, de acuerdo a estas reglas
+•	un equipo terrorista está complicado si: ninguno de sus integrantes tiene un rifle awp, o tiene algún integrante sin casco ni chaleco.
+•	un equipo antiterrorista está complicado si: ningún integrante tiene un rifle groso o si menos de 5 integrantes tienen casco
+Los rifles grosos son: 
+•	aquellos cuyo modelo sea más importante (i.e. está antes en la lista de importanciaRifles) que el m4a1.
+•	los que disparan 50 o más veces por segundo.
+Este predicado debe ser inversible, y hay que indicar qué tuviste que hacer para lograrlo. 
+
+4.	definir el predicado equipoProtegido/1
+Se dice que un equipo está protegido si la resistencia total de cada uno de sus integrantes es al menos 100. La resistencia de un integrante es la suma de las resistencias de su equipamiento.
+Ayudas: usar algún predicado auxiliar, y también alguno de los ítems anteriores.
+
+5.	definir el predicado regionLlena/1, cuyo argumento es un mapa.
+La región de un mapa está llena si tanto el mapa como todos sus mapas limítrofes están llenos.
+Un mapa está lleno si en total hay al menos 12 ítems, tomando los ítems de los jugadores que están en el mapa.
+P.ej. si en un mapa están roque y mecha, roque tiene tres ítems de equipamiento (p.ej. casco, escudo y pistola) y mecha cuatro (casco, rifle, dos pistolas), entonces en total en el mapa hay 7 ítems (los tres de roque y los cuatro de mecha).
+Ayuda: conviene armar directamente una lista de ítems, no de jugadores.
+
+6.	definir el predicado puedeIrA/2, que relaciona un jugador con un mapa, si el jugador puede ir al mapa.
+Un jugador puede ir a un mapa si puede llegar desde donde está, yendo por limítrofes, sin caer en ningún mapa con más de 3 enemigos.
+Ayudas
+•	definir un predicado auxiliar puedeMoverse/3, que relacione jugador, mapa origen y mapa destino. Un jugador puedeIrA si puedeMoverse desde donde está hasta el destino.
+•	puedeMoverse definirlo recursivamente, el caso base es cuando el origen es igual al destino.
